@@ -43,7 +43,7 @@ const HomePage = () => {
 					</Flex>
 				)}
 
-				{posts.map((post) => (
+				{Array.isArray(posts) && posts.map(post => (
 					<Post key={post._id} post={post} postedBy={post.postedBy} />
 				))}
 			</Box>
