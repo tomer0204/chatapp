@@ -13,6 +13,7 @@
   "author": "",
   "license": "ISC",
   "dependencies": {
+    "@chakra-ui/button": "^2.1.0",
     "@chakra-ui/image": "^2.1.0",
     "@chakra-ui/layout": "^2.3.1",
     "@chakra-ui/menu": "^2.2.1",

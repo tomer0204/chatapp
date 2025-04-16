@@ -38,3 +38,4 @@ const SuggestedUser = ({ user }) => {
 };
 
 export default SuggestedUser;
+

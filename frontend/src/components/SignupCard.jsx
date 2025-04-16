@@ -50,9 +50,8 @@ export default function SignupCard() {
 				return;
 			}
 
-			setUser(data.user || data);
-			localStorage.setItem("user-threads", JSON.stringify(data.user || data));
-
+			localStorage.setItem("user-threads", JSON.stringify(data));
+			setUser(data);
 		} catch (error) {
 			showToast("Error", error, "error");
 		}
