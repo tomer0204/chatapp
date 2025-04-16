@@ -15,7 +15,7 @@ function App() {
     const user = useRecoilValue(userAtom);
     const { pathname } = useLocation();
     return (
-        <Box position="relative" w='full'>
+        <Box position={"relative"} w='full'>
             <Container maxW={pathname === "/" ? { base: "620px", md: "900px" } : "620px"}>
                 <Header />
                 <Routes>

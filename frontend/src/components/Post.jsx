@@ -1,4 +1,4 @@
-import { Avatar } from "@chakra-ui/avatar";
+import { Avatar } from "@chakra-ui/react";
 import { Image } from "@chakra-ui/image";
 import { Box, Flex, Text } from "@chakra-ui/layout";
 import { Link, useNavigate } from "react-router-dom";
