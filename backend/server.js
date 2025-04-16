@@ -15,7 +15,9 @@ connectDB();
 job.start();
 
 if (
-	!process.env.CLOUDINARY_URL||
+	!process.env.CLOUDINARY_CLOUD_NAME||
+	!process.env.CLOUDINARY_API_KEY||
+	!process.env.CLOUDINARY_API_SECRET||
 	!process.env.MONGODB_URI ||
 	!process.env.JWT_SECRET
 ) {
@@ -27,7 +29,6 @@ const PORT = process.env.PORT || 5000;
 const __dirname = path.resolve();
 
 cloudinary.config({
-	CLOUDINARY_URL: process.env.CLOUDINARY_URL,
 	cloud_name: process.env.CLOUDINARY_CLOUD_NAME,
 	api_key: process.env.CLOUDINARY_API_KEY,
 	api_secret: process.env.CLOUDINARY_API_SECRET,
