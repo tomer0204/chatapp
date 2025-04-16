@@ -22,7 +22,7 @@ import postsAtom from "../atoms/postsAtom";
 
 const Actions = ({ post }) => {
 	const user = useRecoilValue(userAtom);
-	const [liked, setLiked] = useState(post.likes.includes(user?._id));
+	const [liked, setLiked] = useState(post.likes.includes(user._id));
 	const [posts, setPosts] = useRecoilState(postsAtom);
 	const [isLiking, setIsLiking] = useState(false);
 	const [isReplying, setIsReplying] = useState(false);
