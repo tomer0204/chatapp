@@ -23,19 +23,22 @@ import usePreviewImg from "../hooks/usePreviewImg";
 
 const MessageInput = ({ setMessages }) => {
 	const [messageText, setMessageText] = useState("");
-	const showToast = useShowToast();
 	const selectedConversation = useRecoilValue(selectedConversationAtom);
 	const setConversations = useSetRecoilState(conversationsAtom);
 	const imageRef = useRef(null);
 	const { onClose } = useDisclosure();
 	const { handleImageChange, imgUrl, setImgUrl } = usePreviewImg();
 	const [isSending, setIsSending] = useState(false);
+	const showToast = useShowToast();
 
 	const handleSendMessage = async (e) => {
+		 if (!selectedConversation?.userId) {
+			 showToast("Warning", "choose a conversation ", "warning");
+			 return;
+		 }
 		e.preventDefault();
 		if (!messageText && !imgUrl) return;
 		if (isSending) return;
-
 		setIsSending(true);
 
 		try {
