@@ -5,9 +5,20 @@ import { v2 as cloudinary } from "cloudinary";
 
 async function sendMessage(req, res) {
 	try {
+		console.log("📩 /api/messages called");
+
 		const { recipientId, message } = req.body;
 		let { img } = req.body;
-		const senderId = req.user._id;
+		const senderId = req.user?._id;
+
+		console.log("Sender:", senderId);
+		console.log("Recipient:", recipientId);
+		console.log("Message:", message);
+		console.log("Image?", img ? "yes" : "no");
+
+		if (!senderId || !recipientId || (!message && !img)) {
+			return res.status(400).json({ error: "Missing required fields" });
+		}
 
 		let conversation = await Conversation.findOne({
 			participants: { $all: [senderId, recipientId] },
@@ -22,11 +33,14 @@ async function sendMessage(req, res) {
 				},
 			});
 			await conversation.save();
+			console.log("✅ New conversation created");
 		}
 
 		if (img) {
+			console.log("🖼 Uploading image...");
 			const uploadedResponse = await cloudinary.uploader.upload(img);
 			img = uploadedResponse.secure_url;
+			console.log("✅ Image uploaded:", img);
 		}
 
 		const newMessage = new Message({
@@ -51,11 +65,15 @@ async function sendMessage(req, res) {
 			io.to(recipientSocketId).emit("newMessage", newMessage);
 		}
 
+		console.log("✅ Message sent successfully");
 		res.status(201).json(newMessage);
 	} catch (error) {
+		console.error("❌ Error in sendMessage:", error);
 		res.status(500).json({ error: error.message });
 	}
 }
+
+
 
 async function getMessages(req, res) {
 	const { otherUserId } = req.params;

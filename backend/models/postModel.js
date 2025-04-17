@@ -5,43 +5,43 @@ const postSchema = new mongoose.Schema(
         postedBy: {
             type: mongoose.Schema.Types.ObjectId,
             ref: "User",
-            required: true,
+            required: true
         },
         text: {
             type: String,
-            maxLength: 500,
+            maxLength: 500
         },
         img: {
-            type: String,
+            type: String
         },
-        likes: {
-            // array of user ids
-            type: [mongoose.Schema.Types.ObjectId],
-            ref: "User",
-            default: [],
-        },
+        likes: [
+            {
+                type: mongoose.Schema.Types.ObjectId,
+                ref: "User"
+            }
+        ],
         replies: [
             {
                 userId: {
                     type: mongoose.Schema.Types.ObjectId,
                     ref: "User",
-                    required: true,
+                    required: true
                 },
                 text: {
                     type: String,
-                    required: true,
+                    required: true
                 },
                 userProfilePic: {
-                    type: String,
+                    type: String
                 },
                 username: {
-                    type: String,
-                },
-            },
-        ],
+                    type: String
+                }
+            }
+        ]
     },
     {
-        timestamps: true,
+        timestamps: true
     }
 );
 

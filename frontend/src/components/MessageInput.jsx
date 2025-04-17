@@ -32,10 +32,6 @@ const MessageInput = ({ setMessages }) => {
 	const showToast = useShowToast();
 
 	const handleSendMessage = async (e) => {
-		 if (!selectedConversation?.userId) {
-			 showToast("Warning", "choose a conversation ", "warning");
-			 return;
-		 }
 		e.preventDefault();
 		if (!messageText && !imgUrl) return;
 		if (isSending) return;
