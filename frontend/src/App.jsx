@@ -11,9 +11,11 @@ import UpdateProfilePage from "./pages/UpdateProfilePage";
 import CreatePost from "./components/CreatePost";
 import ChatPage from "./pages/ChatPage";
 import { SettingsPage } from "./pages/SettingsPage";
+import useNotifications from "./hooks/useNotifications.js";
 function App() {
     const user = useRecoilValue(userAtom);
-    const { pathname } = useLocation();
+    const { pathname } = useLocation()
+    useNotifications();
     return (
         <Box position={"relative"} w='full'>
             <Container maxW={pathname === "/" ? { base: "620px", md: "900px" } : "620px"}>

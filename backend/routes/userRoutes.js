@@ -10,11 +10,13 @@ import {
   freezeAccount,
 } from "../controller/userController.js";
 import protectRoute from "../middlewares/protectRoute.js";
+import {getUserByUsername} from "../controller/userController.js";
 
 const router = express.Router();
 
 router.get("/suggested", protectRoute, getSuggestedUsers);
 router.get("/profile/:query", getUserProfile);
+router.get("/username/:username", getUserByUsername);
 router.post("/signup", signupUser);
 router.post("/login", loginUser);
 router.post("/logout", logoutUser);

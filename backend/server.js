@@ -3,6 +3,7 @@ import dotenv from "dotenv";
 dotenv.config();
 import connectDB from "./db/connectDB.js";
 import cookieParser from "cookie-parser";
+import cors from "cors"
 import userRoutes from "./routes/userRoutes.js";
 import postRoutes from "./routes/postRoutes.js";
 import { v2 as cloudinary } from "cloudinary";
@@ -10,6 +11,7 @@ import messageRoutes from "./routes/messageRoutes.js";
 import job from "./cron/cron.js";
 import * as path from "node:path";
 import {app, server} from "./socket/socket.js";
+import notificationRoutes from "./routes/notificationRoutes.js";
 
 connectDB();
 job.start();
@@ -21,7 +23,7 @@ if (
 	!process.env.MONGODB_URI ||
 	!process.env.JWT_SECRET
 ) {
-	console.error("❌ Missing required environment variables");
+	console.error(" Missing required environment variables");
 	process.exit(1);
 }
 
@@ -38,9 +40,16 @@ app.use(express.json({limit: "50mb"}));
 app.use(express.urlencoded({ extended: true }));
 app.use(cookieParser());
 
+app.use(
+	cors({
+		origin: "http://localhost:3000",
+		credentials: true,
+	})
+);
 app.use("/api/users", userRoutes);
 app.use("/api/posts", postRoutes);
 app.use("/api/messages",messageRoutes);
+app.use("/api/notifications",notificationRoutes);
 
 if (process.env.NODE_ENV === "production") {
 	app.use(express.static(path.join(__dirname, "/frontend/dist")));

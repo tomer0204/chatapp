@@ -19,6 +19,8 @@ import { useRecoilState, useRecoilValue } from "recoil";
 import userAtom from "../atoms/userAtom";
 import useShowToast from "../hooks/useShowToast";
 import postsAtom from "../atoms/postsAtom";
+import {sendNotification} from "../utils/sendNotification.js";
+import {handleMentions} from "../utils/handleMentions.js";
 
 const Actions = ({ post }) => {
 	const user = useRecoilValue(userAtom);
@@ -38,6 +40,7 @@ const Actions = ({ post }) => {
 		try {
 			const res = await fetch("/api/posts/like/" + post._id, {
 				method: "PUT",
+				credentials: "include",
 				headers: {
 					"Content-Type": "application/json",
 				},
@@ -46,6 +49,14 @@ const Actions = ({ post }) => {
 			if (data.error) return showToast("Error", data.error, "error");
 
 			if (!liked) {
+				if(post.postedBy !== user._id) {
+					await sendNotification({
+						recipientId: post.postedBy,
+						type: "like",
+						message: `${user.username} liked your post`,
+						link: `/${user.username}/post/${post._id}`,
+					});
+				}
 				// add the id of the current user to post.likes array
 				const updatedPosts = posts.map((p) => {
 					if (p._id === post._id) {
@@ -80,6 +91,7 @@ const Actions = ({ post }) => {
 		try {
 			const res = await fetch("/api/posts/reply/" + post._id, {
 				method: "PUT",
+				credentials: "include",
 				headers: {
 					"Content-Type": "application/json",
 				},
@@ -98,6 +110,15 @@ const Actions = ({ post }) => {
 			showToast("Success", "Reply posted successfully", "success");
 			onClose();
 			setReply("");
+			if (post.postedBy !== user._id) {
+				await sendNotification({
+					recipientId: post.postedBy,
+					type: "comment",
+					message: `${user.username} replied to your post`,
+					link: `/${user.username}/post/${post._id}`,
+				});
+				await handleMentions(reply, post._id, post.postedBy);
+			}
 		} catch (error) {
 			showToast("Error", error.message, "error");
 		} finally {

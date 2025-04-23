@@ -2,6 +2,7 @@ import { useState } from "react";
 import useShowToast from "./useShowToast";
 import userAtom from "../atoms/userAtom";
 import { useRecoilValue } from "recoil";
+import {sendNotification} from "../utils/sendNotification.js";
 
 const useFollowUnfollow = (user) => {
 	const currentUser = useRecoilValue(userAtom);
@@ -20,6 +21,7 @@ const useFollowUnfollow = (user) => {
 		try {
 			const res = await fetch(`/api/users/follow/${user._id}`, {
 				method: "POST",
+				credentials: "include",
 				headers: {
 					"Content-Type": "application/json",
 				},
@@ -36,10 +38,19 @@ const useFollowUnfollow = (user) => {
 			} else {
 				showToast("Success", `Followed ${user.name}`, "success");
 				user.followers.push(currentUser?._id); // simulate adding to followers
-			}
+					await sendNotification({
+						recipientId: user._id,
+						type: "follow",
+						message: `${currentUser.username} started following you`,
+						link: `/${currentUser.username}`,
+					});
+				}
+
+
 			setFollowing(!following);
 
 			console.log(data);
+
 		} catch (error) {
 			showToast("Error", error, "error");
 		} finally {

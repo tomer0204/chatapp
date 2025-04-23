@@ -20,6 +20,8 @@ import { conversationsAtom, selectedConversationAtom } from "../atoms/messagesAt
 import { useRecoilValue, useSetRecoilState } from "recoil";
 import { BsFillImageFill } from "react-icons/bs";
 import usePreviewImg from "../hooks/usePreviewImg";
+import {sendNotification} from "../utils/sendNotification.js";
+import userAtom from "../atoms/userAtom.js";
 
 const MessageInput = ({ setMessages }) => {
 	const [messageText, setMessageText] = useState("");
@@ -30,6 +32,7 @@ const MessageInput = ({ setMessages }) => {
 	const { handleImageChange, imgUrl, setImgUrl } = usePreviewImg();
 	const [isSending, setIsSending] = useState(false);
 	const showToast = useShowToast();
+	const user = useRecoilValue(userAtom);
 
 	const handleSendMessage = async (e) => {
 		e.preventDefault();
@@ -40,6 +43,7 @@ const MessageInput = ({ setMessages }) => {
 		try {
 			const res = await fetch("/api/messages", {
 				method: "POST",
+				credentials: "include",
 				headers: {
 					"Content-Type": "application/json",
 				},
@@ -74,6 +78,13 @@ const MessageInput = ({ setMessages }) => {
 			});
 			setMessageText("");
 			setImgUrl("");
+			await sendNotification({
+				recipientId: selectedConversation.userId,
+				type: "message",
+				message: `${user.username} sent you a message`,
+				link: `/chat`,
+			});
+
 		} catch (error) {
 			showToast("Error", error.message, "error");
 		} finally {

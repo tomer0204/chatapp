@@ -10,6 +10,7 @@ const useLogout = () => {
 		try {
 			const res = await fetch("/api/users/logout", {
 				method: "POST",
+				credentials: "include",
 				headers: {
 					"Content-Type": "application/json",
 				},
@@ -23,6 +24,7 @@ const useLogout = () => {
 
 			localStorage.removeItem("user-threads");
 			setUser(null);
+
 		} catch (error) {
 			showToast("Error", error, "error");
 		}

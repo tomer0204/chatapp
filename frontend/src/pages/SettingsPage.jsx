@@ -12,6 +12,7 @@ export const SettingsPage = () => {
 		try {
 			const res = await fetch("/api/users/freeze", {
 				method: "PUT",
+				credentials: "include",
 				headers: { "Content-Type": "application/json" },
 			});
 			const data = await res.json();

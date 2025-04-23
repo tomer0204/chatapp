@@ -7,7 +7,6 @@ const useGetUserProfile = () => {
 	const [loading, setLoading] = useState(true);
 	const { username } = useParams();
 	const showToast = useShowToast();
-
 	useEffect(() => {
 		const getUser = async () => {
 			try {
@@ -22,6 +21,7 @@ const useGetUserProfile = () => {
 					return;
 				}
 				setUser(data);
+
 			} catch (error) {
 				showToast("Error", error.message, "error");
 			} finally {

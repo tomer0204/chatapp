@@ -26,6 +26,7 @@ import userAtom from "../atoms/userAtom";
 import useShowToast from "../hooks/useShowToast";
 import postsAtom from "../atoms/postsAtom";
 import { useParams } from "react-router-dom";
+import {handleMentions} from "../utils/handleMentions.js";
 
 const MAX_CHAR = 500;
 
@@ -59,6 +60,7 @@ const CreatePost = () => {
 		try {
 			const res = await fetch("/api/posts/create", {
 				method: "POST",
+				credentials: "include",
 				headers: {
 					"Content-Type": "application/json",
 				},
@@ -71,12 +73,14 @@ const CreatePost = () => {
 				return;
 			}
 			showToast("Success", "Post created successfully", "success");
+			await handleMentions(postText, data._id, user._id);
 			if (username === user.username) {
 				setPosts([data, ...posts]);
 			}
 			onClose();
 			setPostText("");
 			setImgUrl("");
+
 		} catch (error) {
 			showToast("Error", error, "error");
 		} finally {

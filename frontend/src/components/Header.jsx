@@ -9,6 +9,7 @@ import useLogout from "../hooks/useLogout";
 import authScreenAtom from "../atoms/authAtom";
 import { BsFillChatQuoteFill } from "react-icons/bs";
 import { MdOutlineSettings } from "react-icons/md";
+import NotificationDropdown from "./NotificationDropdown.jsx";
 
 const Header = () => {
 	const { colorMode, toggleColorMode } = useColorMode();
@@ -39,6 +40,7 @@ const Header = () => {
 
 			{user && (
 				<Flex alignItems={"center"} gap={4}>
+						<NotificationDropdown/>
 					<Link as={RouterLink} to={`/${user.username}`}>
 						<RxAvatar size={24} />
 					</Link>
