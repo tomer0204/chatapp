@@ -5,16 +5,13 @@ import { v2 as cloudinary } from "cloudinary";
 
 async function sendMessage(req, res) {
 	try {
-		console.log("📩 /api/messages called");
+
 
 		const { recipientId, message } = req.body;
 		let { img } = req.body;
 		const senderId = req.user?._id;
 
-		console.log("Sender:", senderId);
-		console.log("Recipient:", recipientId);
-		console.log("Message:", message);
-		console.log("Image?", img ? "yes" : "no");
+
 
 		if (!senderId || !recipientId || (!message && !img)) {
 			return res.status(400).json({ error: "Missing required fields" });

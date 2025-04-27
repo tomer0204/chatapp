@@ -115,7 +115,7 @@ const Actions = ({ post }) => {
 					recipientId: post.postedBy,
 					type: "comment",
 					message: `${user.username} replied to your post`,
-					link: `/${user.username}/post/${post._id}`,
+					link: `/${post.postedBy}/post/${post._id}`,
 				});
 				await handleMentions(reply, post._id, post.postedBy);
 			}
